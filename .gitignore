@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+yarn.lock
+package-lock.json
+
+# Vite 빌드 및 캐시
+vite.config.*
+vite/
+.cache/
+dist/
+public/assets/
+
+# IDE 및 편집기 설정
+.vscode/
+.idea/
+workspace.json
+
+# 테스트 커버리지
+coverage/
+
+# 문서 생성
+doc/
+
+# 환경 변수
+.env
+# (개발 환경 설정)
+.env.development
+# (배포 환경 설정)
+.env.production
+
+# 기타
+*.log
+*.DS_Store
+README.md
+LICENSE
