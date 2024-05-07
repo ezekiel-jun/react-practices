@@ -43,7 +43,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
         return {
             totalCount, doneCount, notYetDoneCount
         }
-      }, todos)
+      }, [todos])
     
 
     return (
