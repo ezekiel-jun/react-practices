@@ -1,6 +1,12 @@
 
 import './App.css'
-import { useRef, useReducer, useCallback } from 'react'
+import { 
+  useRef, 
+  useReducer, 
+  useCallback, 
+  createContext,
+  useMemo 
+} from 'react'
 import Header from './components/Header'
 import Editor from './components/Editor'
 import List from './components/List'
@@ -24,6 +30,12 @@ function reducer(state, action) {
   }
 
 }
+
+// Context는 컴포넌트 밖에서 생성한다.
+// Why? 리렌더링을 피하기 위해
+// export const TodoContext = createContext();
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
 
 function App() {
 
@@ -57,11 +69,19 @@ function App() {
     })
   }, []);
 
+  const memoizedDispatch = useMemo(() => {
+    return {onCreate, onUpdate, onDelete};
+  }, [])
+
   return (
     <div className='App'>
       <Header/>
-      <Editor onCreate={onCreate}/>
-      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <TodoStateContext.Provider value= {todos}>
+        <TodoDispatchContext.Provider value = {memoizedDispatch}>
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   )
 }

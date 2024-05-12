@@ -1,10 +1,12 @@
 import "./List.css"
 import TodoItem from "./TodoItem";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import { TodoStateContext } from "../App";
 
-const List = ({ todos, onUpdate, onDelete }) => {
-
+const List = () => {
+    // 앞에서 객체가 아닌 array로 넘김으로 객체구조분해할당이 아니라 바로 받는다
+    const todos = useContext(TodoStateContext)
     const [search, setSearch] = useState("");
     const onChangeSearch = (e) => {
         setSearch(e.target.value);
@@ -20,6 +22,16 @@ const List = ({ todos, onUpdate, onDelete }) => {
     }
 
     const filteredTodos = getFilteredData();
+
+    const { totalCount, doneCount, notYetDoneCount } 
+        = useMemo(() => {
+            const totalCount = todos.length;
+            const doneCount = todos.filter((todo) => todo.isDone).length;
+            const notYetDoneCount = totalCount - doneCount;
+            return {
+                totalCount, doneCount, notYetDoneCount
+            }
+        }, todos)
 
     return (
         <div className="List">
@@ -39,9 +51,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
                 {filteredTodos.map((todo) => {
                     return <TodoItem 
                                 key={todo.id} 
-                                {...todo} 
-                                onUpdate={onUpdate}
-                                onDelete={onDelete} />;
+                                {...todo} />;
                 })}
             </div>
 
